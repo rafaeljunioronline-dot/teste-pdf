@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head><meta charset="utf-8"/><title>Client Info</title></head>
+<body>
+  <h1>Client Info</h1>
+  <form id="clientForm">
+    <div><label>Name</label><br/><input id="client_name" /></div>
+    <div><label>Email</label><br/><input id="client_email" /></div>
+    <div><label>Phone</label><br/><input id="client_phone" /></div>
+    <button type="submit">Next: Project</button>
+    <button type="button" onclick="location.href='/'">Cancel</button>
+  </form>
+
+  <script>
+    const form = document.getElementById('clientForm');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const client = {
+        client_name: document.getElementById('client_name').value || '',
+        client_email: document.getElementById('client_email').value || '',
+        client_phone: document.getElementById('client_phone').value || ''
+      };
+      sessionStorage.setItem('client', JSON.stringify(client));
+      location.href = '/project.html';
+    });
+  </script>
+</body>
+</html>

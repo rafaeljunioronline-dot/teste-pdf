@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head><meta charset="utf-8"/><title>Project Info</title></head>
+<body>
+  <h1>Project Info</h1>
+  <form id="projectForm">
+    <div><label>Project title</label><br/><input id="project_title" /></div>
+    <div><label>Project description</label><br/><textarea id="project_desc"></textarea></div>
+    <button type="submit">Generate Proposal</button>
+    <button type="button" onclick="location.href='/'">Cancel</button>
+  </form>
+  <script>
+    document.getElementById('projectForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const project = {
+        project_title: document.getElementById('project_title').value || '',
+        project_desc: document.getElementById('project_desc').value || ''
+      };
+      sessionStorage.setItem('project', JSON.stringify(project));
+      const company = {
+        empresa_nome: localStorage.getItem('empresa_nome') || '',
+        empresa_telefone: localStorage.getItem('empresa_telefone') || '',
+        empresa_email: localStorage.getItem('empresa_email') || ''
+      };
+      const client = JSON.parse(sessionStorage.getItem('client') || '{}');
+      const projectObj = JSON.parse(sessionStorage.getItem('project') || '{}');
+      const payload = { ...company, ...client, ...projectObj };
+      try {
+        const resp = await fetch('/gerar-pdf', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify(payload)
+        });
+        const data = await resp.json();
+        if (data.success) {
+          sessionStorage.setItem('lastPdfUrl', data.pdfUrl);
+          location.href = '/result.html';
+        } else {
+          alert('Error generating PDF: ' + JSON.stringify(data.error));
+        }
+      } catch (err) {
+        alert('Network error: ' + err.message);
+      }
+    });
+  </script>
+</body>
+</html>

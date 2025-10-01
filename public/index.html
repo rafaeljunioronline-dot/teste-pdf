@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <title>Dashboard - Gerar Proposta</title>
+</head>
+<body>
+  <h1>Dashboard</h1>
+  <button onclick="location.href='/company.html'">Edit Company Info</button>
+  <button onclick="startProposal()">Generate Proposal</button>
+
+  <script>
+    function startProposal() {
+      sessionStorage.removeItem("client");
+      sessionStorage.removeItem("project");
+      location.href = "/client.html";
+    }
+  </script>
+</body>
+</html>

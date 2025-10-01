@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head><meta charset="utf-8"/><title>Company Info</title></head>
+<body>
+  <h1>Edit Company Info</h1>
+  <form id="companyForm">
+    <div>
+      <label>Company name</label><br/>
+      <input name="empresa_nome" id="empresa_nome" />
+    </div>
+    <div>
+      <label>Phone</label><br/>
+      <input name="empresa_telefone" id="empresa_telefone" />
+    </div>
+    <div>
+      <label>Email</label><br/>
+      <input name="empresa_email" id="empresa_email" />
+    </div>
+    <button type="submit">Save</button>
+    <button type="button" onclick="location.href='/'">Back</button>
+  </form>
+
+  <script>
+    const form = document.getElementById('companyForm');
+    const fields = ['empresa_nome','empresa_telefone','empresa_email'];
+    fields.forEach(f => {
+      const v = localStorage.getItem(f);
+      if (v) document.getElementById(f).value = v;
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      fields.forEach(f => {
+        localStorage.setItem(f, document.getElementById(f).value || '');
+      });
+      alert('Company info saved');
+      location.href = '/';
+    });
+  </script>
+</body>
+</html>

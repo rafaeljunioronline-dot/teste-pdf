@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head><meta charset="utf-8"/><title>Result</title></head>
+<body>
+  <h1>Proposal Result</h1>
+  <div id="controls">
+    <button id="downloadBtn">Download PDF</button>
+    <button id="saveBtn">Save Proposal</button>
+    <button onclick="location.href='/'">Back to Dashboard</button>
+  </div>
+  <div id="viewer" style="margin-top:20px">
+    <p id="loading">Loading PDF...</p>
+    <iframe id="pdfFrame" style="width:100%;height:600px;display:none" frameborder="0"></iframe>
+  </div>
+  <script>
+    const url = sessionStorage.getItem('lastPdfUrl');
+    const pdfFrame = document.getElementById('pdfFrame');
+    const loading = document.getElementById('loading');
+    if (url) {
+      pdfFrame.src = url;
+      pdfFrame.style.display = 'block';
+      loading.style.display = 'none';
+      document.getElementById('downloadBtn').addEventListener('click', () => window.open(url, '_blank'));
+      document.getElementById('saveBtn').addEventListener('click', () => {
+        const saved = JSON.parse(localStorage.getItem('saved_proposals') || '[]');
+        saved.push({ url, date: new Date().toISOString() });
+        localStorage.setItem('saved_proposals', JSON.stringify(saved));
+        alert('Proposal saved locally.');
+      });
+    } else {
+      loading.innerText = 'No PDF URL found. Go back and generate again.';
+    }
+  </script>
+</body>
+</html>

@@ -4,19 +4,27 @@
 <body>
   <h1>Project Info</h1>
   <form id="projectForm">
-    <div><label>Project title</label><br/><input id="project_title" /></div>
-    <div><label>Project description</label><br/><textarea id="project_desc"></textarea></div>
+    <div><label>Consumo mensal (kWh)</label><br/><input id="projeto_consumo" /></div>
+    <div><label>Valor do projeto (R$)</label><br/><input id="projeto_valor" /></div>
+    <div><label>Número de painéis</label><br/><input id="projeto_paineis" /></div>
+    <div><label>Número de inversores</label><br/><input id="projeto_inversores" /></div>
     <button type="submit">Generate Proposal</button>
     <button type="button" onclick="location.href='/'">Cancel</button>
   </form>
   <script>
     document.getElementById('projectForm').addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      // monta o objeto do projeto com os nomes que o template espera
       const project = {
-        project_title: document.getElementById('project_title').value || '',
-        project_desc: document.getElementById('project_desc').value || ''
+        projeto_consumo: document.getElementById('projeto_consumo').value || '',
+        projeto_valor: document.getElementById('projeto_valor').value || '',
+        projeto_paineis: document.getElementById('projeto_paineis').value || '',
+        projeto_inversores: document.getElementById('projeto_inversores').value || ''
       };
       sessionStorage.setItem('project', JSON.stringify(project));
+
+      // pega dados da empresa (localStorage) e do cliente (sessionStorage)
       const company = {
         empresa_nome: localStorage.getItem('empresa_nome') || '',
         empresa_telefone: localStorage.getItem('empresa_telefone') || '',
@@ -24,7 +32,10 @@
       };
       const client = JSON.parse(sessionStorage.getItem('client') || '{}');
       const projectObj = JSON.parse(sessionStorage.getItem('project') || '{}');
+
+      // mescla tudo — as chaves batem com seu template
       const payload = { ...company, ...client, ...projectObj };
+
       try {
         const resp = await fetch('/gerar-pdf', {
           method: 'POST',
@@ -36,10 +47,10 @@
           sessionStorage.setItem('lastPdfUrl', data.pdfUrl);
           location.href = '/result.html';
         } else {
-          alert('Error generating PDF: ' + JSON.stringify(data.error));
+          alert('Erro ao gerar PDF: ' + JSON.stringify(data.error));
         }
       } catch (err) {
-        alert('Network error: ' + err.message);
+        alert('Erro de rede: ' + err.message);
       }
     });
   </script>

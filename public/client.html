@@ -4,9 +4,9 @@
 <body>
   <h1>Client Info</h1>
   <form id="clientForm">
-    <div><label>Name</label><br/><input id="client_name" /></div>
-    <div><label>Email</label><br/><input id="client_email" /></div>
-    <div><label>Phone</label><br/><input id="client_phone" /></div>
+    <div><label>Nome</label><br/><input id="cliente_nome" /></div>
+    <div><label>E-mail</label><br/><input id="cliente_email" /></div>
+    <div><label>Telefone</label><br/><input id="cliente_telefone" /></div>
     <button type="submit">Next: Project</button>
     <button type="button" onclick="location.href='/'">Cancel</button>
   </form>
@@ -16,11 +16,11 @@
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       const client = {
-        client_name: document.getElementById('client_name').value || '',
-        client_email: document.getElementById('client_email').value || '',
-        client_phone: document.getElementById('client_phone').value || ''
+        cliente_nome: document.getElementById('cliente_nome').value || '',
+        cliente_email: document.getElementById('cliente_email').value || '',
+        cliente_telefone: document.getElementById('cliente_telefone').value || ''
       };
-      sessionStorage.setItem('client', JSON.stringify(client));
+      sessionStorage.setItem('client', JSON.stringify(client)); // agora tem as chaves corretas
       location.href = '/project.html';
     });
   </script>
